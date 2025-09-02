@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Home</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css', v=7) }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome, {{ username }}</h1>
+    <p><a class="btn secondary" href="{{ url_for('logout') }}">Logout</a></p>
+
+    <!-- Search for users to start a DM -->
+    <div class="card">
+      <input id="userSearch" type="text" placeholder="Search username..." autocomplete="off">
+      <ul id="searchResults"></ul>
+    </div>
+
+    <h2>Chats</h2>
+    {% if chats and chats|length > 0 %}
+      <div class="chat-list">
+        {% for chat in chats %}
+          <a class="chat-item" href="{{ url_for('chat', chat_id=chat.id) }}">
+            <span class="chat-username">{{ chat.username }}</span>
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No chats yet.</p>
+    {% endif %}
+  </div>
+
+  <script>
+    (function () {
+      const input = document.getElementById('userSearch');
+      const results = document.getElementById('searchResults');
+      if (!input || !results) return;
+
+      input.addEventListener('input', async () => {
+        const q = input.value.trim();
+        results.innerHTML = '';
+        if (!q) return;
+
+        try {
+          const res = await fetch('/search_users?q=' + encodeURIComponent(q));
+          const data = await res.json();
+          if (!Array.isArray(data)) return;
+
+          data.forEach(u => {
+            const li = document.createElement('li');
+
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{{ url_for("start_dm") }}';
+
+            const hidden = document.createElement('input');
+            hidden.type = 'hidden';
+            hidden.name = 'username';
+            hidden.value = u.username;
+
+            const btn = document.createElement('button');
+            btn.type = 'submit';
+            btn.textContent = u.username;
+            btn.className = 'btn';
+
+            form.appendChild(hidden);
+            form.appendChild(btn);
+            li.appendChild(form);
+            results.appendChild(li);
+          });
+        } catch (e) {
+          // ignore errors
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

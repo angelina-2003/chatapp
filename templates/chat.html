@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{ chat_title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css', v=10) }}">
+  </head>
+  <body>
+    <div class="container">
+      <div class="chat-header">
+        <h1>{{ chat_title }}</h1>
+        <a class="btn secondary" href="{{ url_for('home') }}">Back to Home</a>
+      </div>
+
+      <h3>Messages</h3>
+      {% if messages and messages|length > 0 %}
+        <ul class="message-list">
+          {% for mid, username, body, created_at in messages %}
+            {% set mine = (username == session['username']) %}
+            <li class="{{ 'message-me' if mine else 'message-other' }}">
+              {% if not mine %}
+                <strong>{{ username }}</strong><br>
+              {% endif %}
+              <div class="msg-body">{{ body }}</div>
+              <span class="message-meta">{{ created_at }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No messages yet.</p>
+      {% endif %}
+
+      <form class="chat-input" method="POST" action="{{ url_for('chat', chat_id=chat_id) }}">
+        <input type="text" name="body" placeholder="Type a message..." required>
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </body>
+</html>

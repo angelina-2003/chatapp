@@ -1,0 +1,188 @@
+/* ----- Layout & type ----- */
+:root {
+  --bg: #fafafa;
+  --card: #ffffff;
+  --ink: #222;
+  --muted: #666;
+  --line: #e6e6e6;
+  --accent: #2563eb;      /* blue */
+  --accent-ink: #fff;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+
+.container {
+  max-width: 820px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+/* Headings */
+h1 { font-size: 28px; margin: 0 0 12px; }
+h2 { font-size: 20px; margin: 24px 0 8px; }
+h3 { font-size: 16px; margin: 18px 0 8px; }
+
+/* Links & buttons */
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+button, .btn {
+  display: inline-block;
+  padding: 8px 12px;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+}
+button:disabled { opacity: .6; cursor: default; }
+button.secondary, .btn.secondary {
+  background: transparent;
+  color: var(--accent);
+}
+
+/* Inputs */
+input[type="text"], input[type="password"] {
+  width: 100%;
+  max-width: 420px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  outline: none;
+}
+input:focus { border-color: var(--accent); }
+
+/* Cards & lists */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+ul { padding-left: 18px; }
+li + li { margin-top: 6px; }
+
+/* Flash / messages (Jinja get_flashed_messages) */
+.flash { padding: 10px 12px; border-radius: 8px; margin: 10px 0; }
+.flash.success { background: #e6f4ff; border: 1px solid #cde6ff; color: #0b66c2; }
+.flash.error   { background: #fff1f1; border: 1px solid #ffd7d7; color: #9a1c1c; }
+
+/* Home: search results under the box */
+#searchResults {
+  list-style: none;
+  padding: 6px;
+  margin: 6px 0 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  max-width: 420px;
+}
+#searchResults li + li { margin-top: 4px; }
+#searchResults form { display: inline; }
+
+/* Chat page */
+.chat-header { display: flex; align-items: center; gap: 12px; }
+
+/* messages as bubbles */
+.message-list {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;   /* remove bullets */
+  padding-left: 0;    /* remove left indent */
+}
+
+.message-list li {
+  list-style: none;
+  max-width: 70%;
+  padding: 8px 12px;
+  border-radius: 12px;
+  position: relative;
+  word-wrap: break-word;
+}
+
+/* messages from the current user (right) */
+.message-me {
+  align-self: flex-end;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-top-right-radius: 0;
+}
+
+/* messages from others (left) */
+.message-other {
+  align-self: flex-start;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-top-left-radius: 0;
+}
+
+.message-meta {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 4px;
+  display: block;
+  text-align: right;
+}
+
+/* Chat input row */
+.chat-input {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+.chat-input input[type="text"] { flex: 1; max-width: none; }
+
+/* Chat list (Home) */
+.chat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+.chat-item {
+  display: block;
+  padding: 12px 16px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: background 0.15s, border-color 0.15s;
+}
+.chat-item:hover {
+  background: #f0f7ff;
+  border-color: var(--accent);
+}
+.chat-username { font-weight: 500; }
+
+/* Ensure chat rows render as boxes on their own line */
+.chat-item { display: block; }
+.chat-item .chat-link {
+  display: block;
+  text-decoration: none;
+  color: var(--ink);
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  transition: background .15s, border-color .15s;
+}
+.chat-item .chat-link:hover {
+  background: #f0f7ff;
+  border-color: var(--accent);
+}
